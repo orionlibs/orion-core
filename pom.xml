@@ -3,23 +3,23 @@
     <groupId>io.github.orionlibs</groupId>
     <artifactId>project-name</artifactId>
     <version>0.0.1</version>
-    <name>name</name>
-    <description>description</description>
-    <url>https://github.com/orionlibs/project-name</url>
+    <name>orion-core</name>
+    <description>Java utilities split by Java package</description>
+    <url>https://github.com/orionlibs/orion-core</url>
     
     
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
 
     <scm>
-        <url>https://github.com/orionlibs/project-name</url>
-        <connection>scm:git:https://github.com/orionlibs/project-name.git</connection>
-        <developerConnection>scm:git:ssh://github.com/orionlibs/project-name.git</developerConnection>
+        <url>https://github.com/orionlibs/orion-core</url>
+        <connection>scm:git:https://github.com/orionlibs/orion-core.git</connection>
+        <developerConnection>scm:git:ssh://github.com/orionlibs/orion-core.git</developerConnection>
     </scm>
 
 

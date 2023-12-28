@@ -1,2 +1,2 @@
-# project-name
-A description
+# orion-core
+Java utilities split by Java package
