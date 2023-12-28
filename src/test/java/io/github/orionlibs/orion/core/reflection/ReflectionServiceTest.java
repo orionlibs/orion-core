@@ -19,7 +19,7 @@ public class ReflectionServiceTest
     {
         TestClass testClass = (TestClass)ReflectionClassesService.instantiateClass(TestClass.class, new Class<?>[] {}, new Object[] {});
         assertNotNull(testClass);
-        testClass = (TestClass)ReflectionClassesService.instantiateClass("com.orion.core.reflection.TestClass", new Class<?>[] {}, new Object[] {});
+        testClass = (TestClass)ReflectionClassesService.instantiateClass("io.github.orionlibs.orion.core.reflection.TestClass", new Class<?>[] {}, new Object[] {});
         assertNotNull(testClass);
     }
 
