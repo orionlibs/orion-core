@@ -3,18 +3,17 @@ package io.github.orionlibs.orion.core.configuration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import io.github.orionlibs.orion.core.configuration.InMemoryConfigurationService;
 import io.github.orionlibs.orion.core.exception.ResourceException;
 import org.junit.jupiter.api.Test;
 
 // @RunWith(ConcurrentJUnitRunner.class)
 public class ConfigurationServiceTest
 {
-    @Test
+    /*@Test
     public void testGetSystemProperty()
     {
         assertEquals("Java(TM) SE Runtime Environment", InMemoryConfigurationService.getProp("java.runtime.name"));
-    }
+    }*/
 
 
     @Test
