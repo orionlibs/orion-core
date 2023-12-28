@@ -98,7 +98,7 @@ public class CalendarServiceTest
         {
             CalendarService.tokeniseDateString("01.01.1970");
         });
-        assertEquals("com.orion.core.calendar.date.InvalidDateException", exception.getClass().getName());
+        assertEquals("io.github.orionlibs.orion.core.calendar.date.InvalidDateException", exception.getClass().getName());
     }
 
 
