@@ -1,2 +1,2 @@
-# project-name
-A description
+# Orion Core
+A set of utilities and reusable code
