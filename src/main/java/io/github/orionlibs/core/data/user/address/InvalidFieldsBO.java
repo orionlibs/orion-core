@@ -30,18 +30,16 @@ public class InvalidFieldsBO extends Orion
         //boolean isInvalidHouseNumber = UserAddressService.isInvalidHouseNumber(model);
         boolean isInvalidHouseAddressLines = UserAddressService.isInvalidHouseAddressLines(model);
         boolean isInvalidPostcode = UserAddressService.isInvalidPostcode(model);
-        boolean isInvalidCountryCodeAlpha2 = UserAddressService.isInvalidCountryCodeAlpha2(model);
+        //boolean isInvalidCountryCodeAlpha2 = UserAddressService.isInvalidCountryCodeAlpha2(model);
         /*if(isInvalidHouseNumber)
         {
             invalidFields.add("houseNumber");
         }*/
-
         if(isInvalidHouseAddressLines)
         {
             invalidFields.add("houseAddressLine1");
             invalidFields.add("houseAddressLine2");
         }
-
         if(isInvalidPostcode)
         {
             invalidFields.add("postcode");
@@ -49,19 +47,16 @@ public class InvalidFieldsBO extends Orion
         else
         {
             String postcodePrefix = UserAddressService.getPostcodePrefix(model.getPostcode());
-
             if(postcodePrefix == null)
             {
                 invalidFields.add("postcode");
             }
-
         }
 
-        if(isInvalidCountryCodeAlpha2)
+        /*if(isInvalidCountryCodeAlpha2)
         {
             invalidFields.add("countryCodeAlpha2");
-        }
-
+        }*/
         return invalidFields;
     }
 }

@@ -62,18 +62,6 @@ public class UserAddressService extends OrionService
     }
 
 
-    public static boolean isValidCountryCodeAlpha2(OrionUserAddressModel address)
-    {
-        return UserAddressBO.of(address).isValidCountryCodeAlpha2();
-    }
-
-
-    public static boolean isInvalidCountryCodeAlpha2(OrionUserAddressModel address)
-    {
-        return !isValidCountryCodeAlpha2(address);
-    }
-
-
     public static void normaliseAddress(OrionUserAddressModel address)
     {
         UserAddressBO.of(address).normaliseAddress();
@@ -178,7 +166,6 @@ public class UserAddressService extends OrionService
 
     public static String minifyUKCountryName(String countryName)
     {
-
         if(countryName != null && "United Kingdom of Great Britain and Northern Ireland".equals(countryName))
         {
             return "U.K.";
@@ -187,6 +174,5 @@ public class UserAddressService extends OrionService
         {
             return countryName;
         }
-
     }
 }
