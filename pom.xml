@@ -87,16 +87,17 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
                 <configuration>
-                    <skip>true</skip>
+                    <!--<skip>true</skip>-->
+                    <failOnError>false</failOnError>
                 </configuration>
-                <!--<executions>
+                <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
-                </executions>-->
+                </executions>
             </plugin>
             
             
