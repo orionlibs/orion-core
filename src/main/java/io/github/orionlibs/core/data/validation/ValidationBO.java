@@ -154,14 +154,49 @@ public class ValidationBO extends Orion
             else if(data instanceof String)
             {
                 String dataString = (String)data;
-                Pattern matcher = Pattern.compile(withRegExAnnotation.value());
-                if(matcher.matcher(dataString).matches())
+                String[] regexPatterns = withRegExAnnotation.value();
+                isInstanceVariableValid = false;
+                for(String regexPattern : regexPatterns)
                 {
-                    isInstanceVariableValid = true;
+                    Pattern matcher = Pattern.compile(regexPattern);
+                    if(matcher.matcher(dataString).matches())
+                    {
+                        isInstanceVariableValid = true;
+                        break;
+                    }
                 }
-                else
+            }
+            else if(data instanceof List<?>)
+            {
+                List<?> dataList = (List<?>)data;
+                String[] regexPatterns = withRegExAnnotation.value();
+                isInstanceVariableValid = true;
+                outterLoop:
+                for(Object dataObject : dataList)
                 {
-                    isInstanceVariableValid = false;
+                    if(dataObject instanceof String dataString)
+                    {
+                        boolean foundMatch = false;
+                        for(String regexPattern : regexPatterns)
+                        {
+                            Pattern matcher = Pattern.compile(regexPattern);
+                            if(matcher.matcher(dataString).matches())
+                            {
+                                foundMatch = true;
+                                break;
+                            }
+                        }
+                        if(!foundMatch)
+                        {
+                            isInstanceVariableValid = false;
+                            break outterLoop;
+                        }
+                    }
+                    else
+                    {
+                        isInstanceVariableValid = false;
+                        break outterLoop;
+                    }
                 }
             }
         }

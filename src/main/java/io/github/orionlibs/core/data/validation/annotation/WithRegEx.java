@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface WithRegEx
 {
-    String value() default "";
+    String[] value();
 }
