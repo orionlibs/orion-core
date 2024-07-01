@@ -6,6 +6,7 @@ import io.github.orionlibs.core.data.validation.annotation.NotBlank;
 import io.github.orionlibs.core.data.validation.annotation.NotEmpty;
 import io.github.orionlibs.core.data.validation.annotation.NotNull;
 import io.github.orionlibs.core.data.validation.annotation.NotNullOrBlank;
+import io.github.orionlibs.core.data.validation.annotation.WithRegEx;
 import io.github.orionlibs.core.reflection.variable.access.ReflectionInstanceVariablesAccessService;
 import io.github.orionlibs.core.reflection.variable.retrieval.ReflectionInstanceVariablesRetrievalService;
 import java.lang.reflect.Field;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,21 +38,17 @@ public class ValidationBO extends Orion
     public InvalidFields validate()
     {
         Set<String> invalidInstanceVariableNames = new HashSet<>();
-
         if(object != null)
         {
             List<Field> instanceVariables = ReflectionInstanceVariablesRetrievalService.getAllInstanceVariables(object);
             instanceVariables.forEach(field ->
             {
-
                 try
                 {
-
                     if(!isInstanceVariableValid(field, object))
                     {
                         invalidInstanceVariableNames.add(field.getName());
                     }
-
                 }
                 catch(IllegalArgumentException e)
                 {
@@ -60,10 +58,8 @@ public class ValidationBO extends Orion
                 {
                     //throw new InaccessibleException("The instance variable is inaccessible.");
                 }
-
             });
         }
-
         return InvalidFields.builder()
                         .fields(invalidInstanceVariableNames)
                         .build();
@@ -81,10 +77,9 @@ public class ValidationBO extends Orion
         NotEmpty notEmptyAnnotation = instanceVariable.getAnnotation(NotEmpty.class);
         NotBlank notBlankAnnotation = instanceVariable.getAnnotation(NotBlank.class);
         InRange inRangeAnnotation = instanceVariable.getAnnotation(InRange.class);
-
+        WithRegEx withRegExAnnotation = instanceVariable.getAnnotation(WithRegEx.class);
         if(notNullOrBlankAnnotation != null)
         {
-
             if(data == null)
             {
                 isInstanceVariableValid = false;
@@ -94,17 +89,13 @@ public class ValidationBO extends Orion
                 String dataString = (String)data;
                 isInstanceVariableValid = isInstanceVariableValid && dataString != null && !dataString.trim().isEmpty();
             }
-
         }
-
         if(notNullAnnotation != null)
         {
             isInstanceVariableValid = isInstanceVariableValid && data != null;
         }
-
         if(notEmptyAnnotation != null && isInstanceVariableValid)
         {
-
             if(data instanceof String)
             {
                 String dataString = (String)data;
@@ -119,12 +110,9 @@ public class ValidationBO extends Orion
             {
                 isInstanceVariableValid = false;
             }
-
         }
-
         if(notBlankAnnotation != null && isInstanceVariableValid)
         {
-
             if(data instanceof String)
             {
                 String dataString = (String)data;
@@ -134,13 +122,10 @@ public class ValidationBO extends Orion
             {
                 isInstanceVariableValid = false;
             }
-
         }
-
         if(inRangeAnnotation != null)
         {
             BigDecimal tempData = null;
-
             if(data instanceof Number)
             {
                 tempData = new BigDecimal(((Number)data).toString());
@@ -149,10 +134,8 @@ public class ValidationBO extends Orion
             {
                 tempData = new BigDecimal(((String)data).toString());
             }
-
             BigDecimal inRangeMinimumValue = new BigDecimal(inRangeAnnotation.min());
             BigDecimal inRangeMaximumValue = new BigDecimal(inRangeAnnotation.max());
-
             if(tempData.compareTo(inRangeMinimumValue) >= 0 && tempData.compareTo(inRangeMaximumValue) <= 0)
             {
                 isInstanceVariableValid = true;
@@ -161,9 +144,27 @@ public class ValidationBO extends Orion
             {
                 isInstanceVariableValid = false;
             }
-
         }
-
+        if(withRegExAnnotation != null)
+        {
+            if(data == null)
+            {
+                isInstanceVariableValid = false;
+            }
+            else if(data instanceof String)
+            {
+                String dataString = (String)data;
+                Pattern matcher = Pattern.compile(withRegExAnnotation.value());
+                if(matcher.matcher(dataString).matches())
+                {
+                    isInstanceVariableValid = true;
+                }
+                else
+                {
+                    isInstanceVariableValid = false;
+                }
+            }
+        }
         return isInstanceVariableValid;
     }
 }
