@@ -1,6 +1,7 @@
 package io.github.orionlibs.core.data.validation;
 
 import io.github.orionlibs.core.abstraction.Orion;
+import io.github.orionlibs.core.abstraction.OrionInvalidatable;
 import io.github.orionlibs.core.data.validation.annotation.InRange;
 import io.github.orionlibs.core.data.validation.annotation.NotBlank;
 import io.github.orionlibs.core.data.validation.annotation.NotEmpty;
@@ -11,6 +12,7 @@ import io.github.orionlibs.core.reflection.variable.access.ReflectionInstanceVar
 import io.github.orionlibs.core.reflection.variable.retrieval.ReflectionInstanceVariablesRetrievalService;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +45,46 @@ public class ValidationBO extends Orion
             List<Field> instanceVariables = ReflectionInstanceVariablesRetrievalService.getAllInstanceVariables(object);
             instanceVariables.forEach(field ->
             {
+                ReflectionInstanceVariablesAccessService.makeInstanceVariableAccessible(field);
+                Object data = null;
+                try
+                {
+                    data = field.get(object);
+                    if(data instanceof OrionInvalidatable)
+                    {
+                        InvalidFields invalidFields = ValidationBO.of(data).validate();
+                        if(invalidFields.isEmpty())
+                        {
+                            for(String invalidField : invalidFields.getFields())
+                            {
+                                invalidInstanceVariableNames.add(field.getName() + "." + invalidField);
+                            }
+                        }
+                    }
+                    else if(data instanceof Collection<?>)
+                    {
+                        Collection<?> dataList = (Collection<?>)data;
+                        outterLoop:
+                        for(Object dataObject : dataList)
+                        {
+                            if(dataObject instanceof OrionInvalidatable)
+                            {
+                                InvalidFields invalidFields = ValidationBO.of(dataObject).validate();
+                                if(invalidFields.isNotEmpty())
+                                {
+                                    for(String invalidField : invalidFields.getFields())
+                                    {
+                                        invalidInstanceVariableNames.add(field.getName() + "." + invalidField);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch(IllegalAccessException e)
+                {
+                    throw new RuntimeException(e);
+                }
                 try
                 {
                     if(!isInstanceVariableValid(field, object))
@@ -166,9 +208,9 @@ public class ValidationBO extends Orion
                     }
                 }
             }
-            else if(data instanceof List<?>)
+            else if(data instanceof Collection<?>)
             {
-                List<?> dataList = (List<?>)data;
+                Collection<?> dataList = (Collection<?>)data;
                 String[] regexPatterns = withRegExAnnotation.value();
                 isInstanceVariableValid = true;
                 outterLoop:

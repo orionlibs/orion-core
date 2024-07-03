@@ -15,12 +15,10 @@ public class ValidationService extends OrionService
     public static void isObjectValidOrThrowException(Object object)
     {
         InvalidFields invalidInstanceVariableNames = ValidationBO.of(object).validate();
-
         if(invalidInstanceVariableNames != null && !invalidInstanceVariableNames.isEmpty())
         {
             throw new InvalidArgumentException();
         }
-
     }
 
 
