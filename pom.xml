@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.orionlibs</groupId>
     <artifactId>orion-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>Orion Core</name>
     <description>A set of utilities and reusable code</description>
     <url>https://github.com/orionlibs/orion-core</url>
