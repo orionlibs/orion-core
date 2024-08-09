@@ -1,6 +1,6 @@
 package io.github.orionlibs.core.data.validation;
 
-import io.github.orionlibs.core.abstraction.Orion;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +13,23 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class InvalidFields extends Orion
+public class InvalidFields
 {
     private Set<String> fields;
+
+
+    public static InvalidFields of()
+    {
+        InvalidFields temp = new InvalidFields();
+        temp.setFields(new HashSet<String>());
+        return temp;
+    }
+
+
+    public void addField(String field)
+    {
+        fields.add(field);
+    }
 
 
     public boolean isEmpty()
